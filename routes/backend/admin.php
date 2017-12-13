@@ -4,13 +4,21 @@
  * All route names are prefixed with 'admin.'.
  */
 Route::redirect('/', '/admin/dashboard', 301);
+
 Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 
 Route::resource('team', 'TeamController');
 
-Route::get('work_flow', 'DashboardController@workFlow')->name('workFlow');
-Route::get('dashboard', 'DashboardController@index')->name('dashboard');
-Route::get('dashboard', 'DashboardController@index')->name('dashboard');
-Route::get('dashboard', 'DashboardController@index')->name('dashboard');
-Route::get('dashboard', 'DashboardController@index')->name('dashboard');
-Route::get('dashboard', 'DashboardController@index')->name('dashboard');
+Route::resource('project', 'ProjectController');
+
+Route::resource('workFlow', 'WorkFlowController');
+
+Route::resource('partners', 'PartnerController');
+
+Route::resource('testimonials', 'TestimonialController');
+
+Route::resource('career', 'CareerController');
+
+Route::resource('contact', 'ContactController');
+
+Route::resource('slide_images', 'SliderImageController');
