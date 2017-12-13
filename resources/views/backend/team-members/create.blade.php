@@ -11,10 +11,14 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>Add Team Member</strong>
+                <strong>{{ isset($team_member) ? 'Edit' : 'Add' }} Team Member</strong>
             </div><!--card-header-->
             <div class="card-block">
+                @if(isset($team_member))
+                {{ html()->modelForm($team_member, 'POST', route('admin.team_members.update'))->class('form-horizontal')->acceptsFiles()->open() }}
+                @else
                 {{ html()->form('POST', route('admin.team_members.store'))->class('form-horizontal')->acceptsFiles()->open() }}
+                @endif
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="name">Full Name</label>
                     <div class="col-md-9">
