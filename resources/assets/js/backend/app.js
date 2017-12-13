@@ -92,6 +92,21 @@ function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+function confirmDelete(link, domElement) {
+    if (confirm("Are you sure want to delete?")) {
+        $.ajax({
+            url: link,
+            type: 'delete',
+            success(){
+                domElement.slideUp();
+            },
+            error(){
+                alert('Sorry, could not delete item');
+            }
+        });
+    }
+}
+
 function init(url) {
 
     /* ---------- Tooltip ---------- */
