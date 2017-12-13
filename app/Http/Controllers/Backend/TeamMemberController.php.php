@@ -1,21 +1,24 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\TeamMember;  
+use App\Models\TeamMember;
+use App\Models\Fileentry;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
-class TeamMemberController extends Controller
-{
+class TeamMemberController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        $teamMember = TeamMember::all();
-        return view('backend.team-members.index', compact('teamMember'));
+    public function index() {
+        $teamMembers = TeamMember::all();
+        return view('backend.team-members.index', compact('teamMembers'));
     }
 
     /**
@@ -23,8 +26,7 @@ class TeamMemberController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create() {
         return view('backend.team-members.create');
     }
 
@@ -34,29 +36,45 @@ class TeamMemberController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $this->validate($request, [
             'name' => 'required',
             'designation' => 'required',
             'department' => 'required',
             'email' => 'required',
         ]);
-        
-        $teamMember = new TeamMember;
-        $teamMember->name = $request->name;
-        $teamMember->designation = $request->designation;
-        $teamMember->department = $request->department;
-        $teamMember->email = $request->email;
-        $teamMember->fbid = $request->fbid;
-        $teamMember->linkinid = $request->linkinid;
-        $teamMember->twitterid = $request->twitterid;
-        
-//        $team->save();
-        $teamMemberId = $teamMember->id;
-        
-        
-        return redirect()->route('admin.team-members.index');
+        dump($request->all());
+//        $teamMember = new TeamMember;
+//        $teamMember->name = $request->name;
+//        $teamMember->designation = $request->designation;
+//        $teamMember->department = $request->department;
+//        $teamMember->email = $request->email;
+//        $teamMember->fbid = $request->fbid;
+//        $teamMember->linkinid = $request->linkinid;
+//        $teamMember->twitterid = $request->twitterid;
+//        
+////        $team->save();
+//        $teamMemberId = $teamMember->id;
+
+        foreach ($request->images as $r) {
+
+//        dd($r['file']->isFile());
+            if ($r['file']->isFile()) {
+                $file = $request->file('image');
+                $extension = $file->getClientOriginalExtension();
+                Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
+                $entry = new Fileentry();
+                $entry->mime = $file->getClientMimeType();
+                $entry->original_filename = $file->getClientOriginalName();
+                $entry->filename = $file->getFilename() . '.' . $extension;
+
+//            $entry->save();
+                dd($entry);
+
+                $entryid = $entry->id;
+            }
+            return redirect()->route('admin.team-members.index');
+        }
     }
 
     /**
@@ -65,8 +83,7 @@ class TeamMemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         $teamMember = TeamMember::where('id', $id)->first();
         return view('backend.team-members.show', compact('teamMember'));
     }
@@ -77,8 +94,7 @@ class TeamMemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $teamMember = TeamMember::where('id', $id)->first();
         return view('backend.team-members.edit', compact('teamMember'));
     }
@@ -90,17 +106,16 @@ class TeamMemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-         $this->validate($request, [
+    public function update(Request $request, $id) {
+        $this->validate($request, [
             'name' => 'required',
             'designation' => 'required',
             'department' => 'required',
             'email' => 'required',
         ]);
-         $update = TeamMember::find($id);
-         
-         $update = new TeamMember;
+        $update = TeamMember::find($id);
+
+        $update = new TeamMember;
         $update->name = $request->name;
         $update->designation = $request->designation;
         $update->department = $request->department;
@@ -108,10 +123,10 @@ class TeamMemberController extends Controller
         $update->fbid = $request->fbid;
         $update->linkinid = $request->linkinid;
         $update->twitterid = $request->twitterid;
-        
+
 //        $update->save();
-         
-         
+
+
         return redirect()->route('admin.team-members.index');
     }
 
@@ -121,10 +136,10 @@ class TeamMemberController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         TeamMember::where('id', $id)->delete();
 
         return back();
     }
+
 }
