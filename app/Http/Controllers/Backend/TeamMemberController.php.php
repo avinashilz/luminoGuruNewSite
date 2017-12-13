@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TeamMember;
-use App\Models\Fileentry;
+use App\Models\TeamImage;
+use App\Models\FileEntry;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
 
@@ -43,38 +44,46 @@ class TeamMemberController extends Controller {
             'department' => 'required',
             'email' => 'required',
         ]);
-        dump($request->all());
-//        $teamMember = new TeamMember;
-//        $teamMember->name = $request->name;
-//        $teamMember->designation = $request->designation;
-//        $teamMember->department = $request->department;
-//        $teamMember->email = $request->email;
-//        $teamMember->fbid = $request->fbid;
-//        $teamMember->linkinid = $request->linkinid;
-//        $teamMember->twitterid = $request->twitterid;
-//        
-////        $team->save();
-//        $teamMemberId = $teamMember->id;
+//        dump($request->all());
+        $teamMember = new TeamMember;
+        $teamMember->name = $request->name;
+        $teamMember->designation = $request->designation;
+        $teamMember->department = $request->department;
+        $teamMember->email = $request->email;
+        $teamMember->fbid = $request->fbid;
+        $teamMember->linkinid = $request->linkinid;
+        $teamMember->twitterid = $request->twitterid;
 
-        foreach ($request->images as $r) {
+        $teamMember->save();
+        $teamMemberId = $teamMember->id;
+//        dd($teamMemberId);
+        foreach ($request->images as $photo) {
 
-//        dd($r['file']->isFile());
-            if ($r['file']->isFile()) {
-                $file = $request->file('image');
+//        dd($photo['file']->isFile());
+            if ($photo['file']->isFile()) {
+                
+                $file = $photo['file'];
                 $extension = $file->getClientOriginalExtension();
+//                dd($extension);
                 Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
                 $entry = new Fileentry();
                 $entry->mime = $file->getClientMimeType();
                 $entry->original_filename = $file->getClientOriginalName();
                 $entry->filename = $file->getFilename() . '.' . $extension;
 
-//            $entry->save();
-                dd($entry);
+                $entry->save();
 
                 $entryid = $entry->id;
+//                dd($entryid);
             }
-            return redirect()->route('admin.team-members.index');
+//            dd($entryid);
+            $memberImage = new TeamImage;
+            $memberImage->team_id = $teamMemberId;
+            $memberImage->file_entry_id = $entryid;
+            $memberImage->save();
         }
+//        dd('yes');
+        return redirect()->route('admin.team-members.index');
     }
 
     /**
