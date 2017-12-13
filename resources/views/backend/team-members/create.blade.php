@@ -14,47 +14,47 @@
                 <strong>Add Team Member</strong>
             </div><!--card-header-->
             <div class="card-block">
-                {{ html()->form('POST', route('admin.team_members.store'))->class('form-horizontal')->open() }}
+                {{ html()->form('POST', route('admin.team_members.store'))->class('form-horizontal')->acceptsFiles()->open() }}
                 <div class="form-group row">
-                    <label class="col-md-3 form-control-label" for="name">Name</label>
+                    <label class="col-md-3 form-control-label" for="name">Full Name</label>
                     <div class="col-md-9">
-                        {{ html()->email('name')->placeholder('Full Name')->class('form-control') }}
+                        {{ html()->text('name')->placeholder('Full Name')->class('form-control')->required(true) }}
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="email">Email</label>
                     <div class="col-md-9">
-                        {{ html()->email('email')->placeholder('Email')->class('form-control') }}
+                        {{ html()->email('email')->placeholder('Email')->class('form-control')->required(true) }}
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="designation">Designation</label>
                     <div class="col-md-9">
-                        {{ html()->email('designation')->placeholder('Designation')->class('form-control') }}
+                        {{ html()->text('designation')->placeholder('Designation')->class('form-control')->required(true) }}
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="department">Department</label>
                     <div class="col-md-9">
-                        {{ html()->email('department')->placeholder('Department')->class('form-control') }}
+                        {{ html()->text('department')->placeholder('Department')->class('form-control')->required(true) }}
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="fbid">Facebook ID</label>
                     <div class="col-md-9">
-                        {{ html()->email('fbid')->placeholder('Facebook Profile Link')->class('form-control') }}
+                        {{ html()->text('fbid')->placeholder('Facebook Profile Link')->class('form-control') }}
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="linkinid">Linkedin ID</label>
                     <div class="col-md-9">
-                        {{ html()->email('linkinid')->placeholder('Linkedin Profile Link')->class('form-control') }}
+                        {{ html()->text('linkinid')->placeholder('Linkedin Profile Link')->class('form-control') }}
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="twitterid">Twitter ID</label>
                     <div class="col-md-9">
-                        {{ html()->email('twitterid')->placeholder('Twitter Profile Link')->class('form-control') }}
+                        {{ html()->text('twitterid')->placeholder('Twitter Profile Link')->class('form-control') }}
                     </div>
                 </div>
                 @for($x = 0; $x < 3; $x ++)
