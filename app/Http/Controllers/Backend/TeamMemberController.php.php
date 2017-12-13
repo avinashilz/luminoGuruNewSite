@@ -104,8 +104,8 @@ class TeamMemberController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        $teamMember = TeamMember::where('id', $id)->first();
-        return view('backend.team-members.edit', compact('teamMember'));
+        $teamMembers = TeamMember::where('id', $id)->first();
+        return view('backend.team-members.index', compact('teamMembers'));
     }
 
     /**
