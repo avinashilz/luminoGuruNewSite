@@ -12,11 +12,6 @@ use Illuminate\Support\Facades\File;
 
 class TeamMemberController extends Controller {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index() {
         $teamMembers = TeamMember::all();
         return view('backend.team-members.index', compact('teamMembers'));
@@ -68,12 +63,7 @@ class TeamMemberController extends Controller {
         return redirect()->route('admin.team-members.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show($id) {
         $teamMember = TeamMember::where('id', $id)->first();
         return view('backend.team-members.show', compact('teamMember'));
@@ -81,7 +71,7 @@ class TeamMemberController extends Controller {
 
     public function edit($id) {
         $teamMembers = TeamMember::where('id', $id)->first();
-        return view('backend.team-members.create', compact('teamMembers'));
+        return view('backend.team-members.create', compact('teamMember'));
     }
 
     public function update(Request $request, $id) {
