@@ -3,7 +3,7 @@
 @section ('title', __('labels.backend.access.users.management') . ' | ' . __('labels.backend.access.users.edit'))
 
 @section('breadcrumb-links')
-@include('backend.team.includes.breadcrumb-links')
+@include('backend.team-members.includes.breadcrumb-links')
 @endsection
 
 @section('content')
@@ -14,7 +14,7 @@
                 <strong>Add Team Member</strong>
             </div><!--card-header-->
             <div class="card-block">
-                {{ html()->form('POST', route('admin.teams.create'))->class('form-horizontal')->open() }}
+                {{ html()->form('POST', route('admin.team_members.store'))->class('form-horizontal')->open() }}
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="name">Name</label>
                     <div class="col-md-9">

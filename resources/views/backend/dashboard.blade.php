@@ -8,7 +8,7 @@
                     <strong>{{ __('strings.backend.dashboard.welcome') }} {{ $logged_in_user->name }}!</strong>
                 </div><!--card-header-->
                 <div class="card-block">
-                    {!! __('strings.backend.welcome') !!}
+                    <a href="{{ route('admin.team_members.create') }}">hello</a>
                 </div><!--card-block-->
             </div><!--card-->
         </div><!--col-->
