@@ -7,7 +7,7 @@ Route::redirect('/', '/admin/dashboard', 301);
 
 Route::get('dashboard', 'DashboardController@index')->name('dashboard');
 
-Route::resource('team_members', 'TeamController');
+Route::resource('team_members', 'TeamMemberController');
 
 Route::resource('projects', 'ProjectController');
 
