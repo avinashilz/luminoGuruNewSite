@@ -81,7 +81,7 @@ class TeamMemberController extends Controller {
 
     public function edit($id) {
         $teamMembers = TeamMember::where('id', $id)->first();
-        return view('backend.team-members.index', compact('teamMembers'));
+        return view('backend.team-members.create', compact('teamMembers'));
     }
 
     public function update(Request $request, $id) {
