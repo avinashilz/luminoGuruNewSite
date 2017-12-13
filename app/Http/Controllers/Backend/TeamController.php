@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
 
@@ -13,7 +13,7 @@ class TeamController extends Controller
      */
     public function index()
     {
-        return view('backend.team');
+        return view('backend.team.index');
     }
 
     /**
@@ -23,7 +23,7 @@ class TeamController extends Controller
      */
     public function create()
     {
-        //
+        return view('backend.team.create');
     }
 
     /**
@@ -34,7 +34,7 @@ class TeamController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return view('backend.team.index');
     }
 
     /**
@@ -45,7 +45,7 @@ class TeamController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('backend.team.create');
     }
 
     /**
@@ -56,7 +56,7 @@ class TeamController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('backend.team.edit');
     }
 
     /**
@@ -68,7 +68,7 @@ class TeamController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return view('backend.team.index');
     }
 
     /**
@@ -79,6 +79,6 @@ class TeamController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return view('backend.team.index');
     }
 }
