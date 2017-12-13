@@ -40,6 +40,24 @@
                         </li>
                     </ul>
                 </li>
+                <li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern('admin/team-members*'), 'open') }}">
+                    <a class="nav-link nav-dropdown-toggle" href="#">
+                        <i class="icon-user"></i> Team Members
+                    </a>
+
+                    <ul class="nav-dropdown-items">
+                        <li class="nav-item">
+                            <a class="nav-link {{ active_class(Active::checkUriPattern('admin/team-members')) }}" href="{{ route('admin.team-members.index') }}">
+                                All Team Members
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ active_class(Active::checkUriPattern('admin/team-members/create')) }}" href="{{ route('admin.team-members.create') }}">
+                                Add Team Member
+                            </a>
+                        </li>
+                    </ul>
+                </li>
             @endif
 
             <li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern('admin/log-viewer*'), 'open') }}">
