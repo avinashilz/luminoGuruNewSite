@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Backend;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Teatimonial; 
 
 class TestimonialController extends Controller
 {
@@ -11,9 +12,8 @@ class TestimonialController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+    public function index() {
+        return view('backend.testimonial.index');
     }
 
     /**
@@ -21,9 +21,8 @@ class TestimonialController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create() {
+        return view('backend.testimonial.create');
     }
 
     /**
@@ -32,9 +31,8 @@ class TestimonialController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        return redirect()->route('admin.testimonials.index');
     }
 
     /**
@@ -43,9 +41,8 @@ class TestimonialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show($id) {
+        return view('backend.testimonial.show');
     }
 
     /**
@@ -54,9 +51,8 @@ class TestimonialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($id) {
+        return view('backend.testimonial.edit');
     }
 
     /**
@@ -66,9 +62,8 @@ class TestimonialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        return redirect()->route('admin.testimonials.index');
     }
 
     /**
@@ -77,8 +72,9 @@ class TestimonialController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id) {
+        Testimonial::where('id', $id)->delete();
+
+        return back();
     }
 }

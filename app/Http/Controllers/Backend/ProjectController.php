@@ -1,19 +1,19 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
-
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Project;  
 
-class ProjectController extends Controller
-{
+class ProjectController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return view(backend.project.index);
+    public function index() {
+        return view('backend.project.index');
     }
 
     /**
@@ -21,9 +21,8 @@ class ProjectController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        
+    public function create() {
+        return view('backend.project.create');
     }
 
     /**
@@ -32,9 +31,8 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        return redirect()->route('admin.projects.index');
     }
 
     /**
@@ -43,9 +41,8 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show($id) {
+        return view('backend.project.show');
     }
 
     /**
@@ -54,9 +51,8 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($id) {
+        return view('backend.project.edit');
     }
 
     /**
@@ -66,9 +62,8 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        return redirect()->route('admin.projects.index');
     }
 
     /**
@@ -77,8 +72,10 @@ class ProjectController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id) {
+        Project::where('id', $id)->delete();
+
+        return back();
     }
+
 }
