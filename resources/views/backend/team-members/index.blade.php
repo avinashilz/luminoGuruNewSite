@@ -34,8 +34,8 @@
                             <td>{{ $member->department }}</td>
                             <td>{{ $member->created_at }}</td>
                             <td>
-                                <a class="badge badge-warning" href="{{ route('admin.team_memebers.edit') }}">Edit</a>
-                                <a class="badge badge-danger" href="{{ route('admin.team_members.delete') }}">Delete</a>
+                                <a class="badge badge-warning" href="{{ route('admin.team_members.edit', $member->id) }}">Edit</a>
+                                <a class="badge badge-danger" href="{{ route('admin.team_members.destroy', $member->id) }}">Delete</a>
                             </td>
                         </tr>
                         @endforeach
