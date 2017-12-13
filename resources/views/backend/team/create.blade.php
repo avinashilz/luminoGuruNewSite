@@ -14,7 +14,7 @@
                 <strong>Add Team Member</strong>
             </div><!--card-header-->
             <div class="card-block">
-                {{ html()->form('POST', route('admin.team.create'))->class('form-horizontal')->open() }}
+                {{ html()->form('POST', route('admin.teams.create'))->class('form-horizontal')->open() }}
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="name">Name</label>
                     <div class="col-md-9">
