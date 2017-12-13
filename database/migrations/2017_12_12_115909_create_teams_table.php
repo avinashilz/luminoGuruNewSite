@@ -19,9 +19,9 @@ class CreateTeamMembersTable extends Migration
             $table->string('designation');
             $table->string('department');
             $table->string('email');
-            $table->string('fbid');
-            $table->string('linkinid');
-            $table->string('twitterid');
+            $table->string('fbid')->nullable();
+            $table->string('linkinid')->nullable();
+            $table->string('twitterid')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
