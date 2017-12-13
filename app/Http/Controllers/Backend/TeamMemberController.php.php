@@ -61,7 +61,7 @@ class TeamMemberController extends Controller {
 
 //        dd($photo['file']->isFile());
             if ($photo['file']->isFile()) {
-                
+
                 $file = $photo['file'];
                 $extension = $file->getClientOriginalExtension();
 //                dd($extension);
@@ -146,9 +146,11 @@ class TeamMemberController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function destroy($id) {
-        TeamMember::where('id', $id)->delete();
-
-        return back();
+        if (TeamMember::where('id', $id)->delete()) {
+            return response()->json('success', 200);
+        } else {
+            return response()->json('fail', 500);
+        }
     }
 
 }
