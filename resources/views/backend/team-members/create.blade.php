@@ -15,9 +15,9 @@
             </div><!--card-header-->
             <div class="card-block">
                 @if(isset($team_member))
-                {{ html()->modelForm($team_member, 'POST', route('admin.team_members.update'))->class('form-horizontal')->acceptsFiles()->open() }}
+                {{ html()->modelForm($team_member, 'POST', route('admin.team-members.update'))->class('form-horizontal')->acceptsFiles()->open() }}
                 @else
-                {{ html()->form('POST', route('admin.team_members.store'))->class('form-horizontal')->acceptsFiles()->open() }}
+                {{ html()->form('POST', route('admin.team-members.store'))->class('form-horizontal')->acceptsFiles()->open() }}
                 @endif
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="name">Full Name</label>
