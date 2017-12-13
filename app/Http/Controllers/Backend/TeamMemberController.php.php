@@ -22,21 +22,10 @@ class TeamMemberController extends Controller {
         return view('backend.team-members.index', compact('teamMembers'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create() {
         return view('backend.team-members.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request) {
         $this->validate($request, [
             'name' => 'required',
@@ -44,7 +33,6 @@ class TeamMemberController extends Controller {
             'department' => 'required',
             'email' => 'required',
         ]);
-//        dump($request->all());
         $teamMember = new TeamMember;
         $teamMember->name = $request->name;
         $teamMember->designation = $request->designation;
@@ -56,15 +44,11 @@ class TeamMemberController extends Controller {
 
         $teamMember->save();
         $teamMemberId = $teamMember->id;
-//        dd($teamMemberId);
-        foreach ($request->images as $photo) {
 
-//        dd($photo['file']->isFile());
+        foreach ($request->images as $photo) {
             if ($photo['file']->isFile()) {
-                
                 $file = $photo['file'];
                 $extension = $file->getClientOriginalExtension();
-//                dd($extension);
                 Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
                 $entry = new Fileentry();
                 $entry->mime = $file->getClientMimeType();
@@ -74,15 +58,13 @@ class TeamMemberController extends Controller {
                 $entry->save();
 
                 $entryid = $entry->id;
-//                dd($entryid);
             }
-//            dd($entryid);
             $memberImage = new TeamImage;
             $memberImage->team_id = $teamMemberId;
             $memberImage->file_entry_id = $entryid;
             $memberImage->save();
         }
-//        dd('yes');
+
         return redirect()->route('admin.team-members.index');
     }
 
@@ -97,24 +79,11 @@ class TeamMemberController extends Controller {
         return view('backend.team-members.show', compact('teamMember'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id) {
         $teamMembers = TeamMember::where('id', $id)->first();
-        return view('backend.team-members.index', compact('teamMembers'));
+        return view('backend.team-members.create', compact('teamMembers'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id) {
         $this->validate($request, [
             'name' => 'required',
@@ -139,16 +108,11 @@ class TeamMemberController extends Controller {
         return redirect()->route('admin.team-members.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id) {
+
         TeamMember::where('id', $id)->delete();
 
-        return back();
+        return redirect()->route('admin.team-members.index');
     }
 
 }
