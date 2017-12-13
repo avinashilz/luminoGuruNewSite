@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Backend;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Contact; 
 
-class CareerController extends Controller
+class ContactController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        //
+   public function index() {
+        return view('backend.contact.index');
     }
 
     /**
@@ -21,9 +21,8 @@ class CareerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
+    public function create() {
+        return view('backend.contact.create');
     }
 
     /**
@@ -32,9 +31,8 @@ class CareerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
+    public function store(Request $request) {
+        return redirect()->route('admin.contacts.index');
     }
 
     /**
@@ -43,9 +41,8 @@ class CareerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
+    public function show($id) {
+        return view('backend.contact.show');
     }
 
     /**
@@ -54,9 +51,8 @@ class CareerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
+    public function edit($id) {
+        return view('backend.contact.edit');
     }
 
     /**
@@ -66,9 +62,8 @@ class CareerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        //
+    public function update(Request $request, $id) {
+        return redirect()->route('admin.contacts.index');
     }
 
     /**
@@ -77,8 +72,9 @@ class CareerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        //
+    public function destroy($id) {
+        Contact::where('id', $id)->delete();
+
+        return back();
     }
 }

@@ -56,7 +56,7 @@ class TeamController extends Controller
         $teamId = $team->id;
         
         
-        return view('backend.team.index');
+        return redirect()->route('admin.teams.index');
     }
 
     /**
@@ -68,7 +68,7 @@ class TeamController extends Controller
     public function show($id)
     {
         $teammember = Team::where('id', $id)->first();
-        return view('backend.team.create', compact('teammember'));
+        return view('backend.team.show', compact('teammember'));
     }
 
     /**
@@ -112,7 +112,7 @@ class TeamController extends Controller
 //        $update->save();
          
          
-        return redirect()->route('admin.index');
+        return redirect()->route('admin.teams.index');
     }
 
     /**
