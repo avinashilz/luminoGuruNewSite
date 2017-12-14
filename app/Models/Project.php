@@ -12,6 +12,6 @@ class Project extends Model
         return $this->belongsTo('App\Models\ProjectCategory');
     }
     public function image() {
-        return $this->belongsTo('App\Models\FileEntry');
+        return $this->belongsTo('App\Models\FileEntry', 'file_entry_id');
     }
 }
