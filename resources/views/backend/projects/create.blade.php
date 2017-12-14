@@ -22,15 +22,21 @@
                     </div>
                 </div>
                 <div class="form-group row">
+                    <label class="col-md-3 form-control-label" for="short_description">Project Category</label>
+                    <div class="col-md-9">
+                        {{ html()->multiselect('project_category_id', $projectCategories)->class('form-control')->required(true) }}
+                    </div>
+                </div>
+                <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="short_description">Short Description</label>
                     <div class="col-md-9">
-                        {{ html()->email('short_description')->placeholder('Short Description')->class('form-control')->required(true) }}
+                        {{ html()->text('short_description')->placeholder('Short Description')->class('form-control')->required(true) }}
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="long_description">Long Description</label>
                     <div class="col-md-9">
-                        {{ html()->email('long_description')->placeholder('Long Description')->class('form-control')->required(true) }}
+                        {{ html()->textarea('long_description')->placeholder('Long Description')->class('form-control')->required(true) }}
                     </div>
                 </div>
                 <div class="form-group row">
