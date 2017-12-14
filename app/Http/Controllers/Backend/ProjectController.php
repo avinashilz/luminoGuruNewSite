@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Project;  
+use App\Models\ProjectCategory;
+use App\Models\FileEntry;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class ProjectController extends Controller {
 
@@ -21,6 +25,13 @@ class ProjectController extends Controller {
     
     public function store(Request $request) {
         $this->validate($request, [
+            'project_category_id'=>'required',
+            'project_category_id'=>'required',
+            'project_category_id'=>'required',
+            'project_category_id'=>'required',
+            'project_category_id'=>'required',
+            'project_category_id'=>'required',
+            'project_category_id'=>'required',
             
         
         ]);
