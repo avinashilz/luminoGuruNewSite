@@ -62,15 +62,6 @@
                     </div>
                 </div>
                 @if(isset($teamMember))
-                @for($x = 0; $x < 3; $x ++)
-                <div class="form-group row">
-                    <label class="col-md-3 form-control-label" for="profileImage{{$x}}">Image {{$x+1}}</label>
-                    <div class="col-md-9">
-                        <input type="file" id="profileImage{{$x}}" name="images[{{$x}}][file]">
-                    </div>
-                </div>
-                @endfor
-                @else
                 @foreach($teamMember->images as $image)
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="profileImage{{$x}}">Image {{$x+1}}</label>
@@ -83,6 +74,15 @@
                     </div>
                 </div>
                 @endforeach
+                @else
+                @for($x = 0; $x < 3; $x ++)
+                <div class="form-group row">
+                    <label class="col-md-3 form-control-label" for="profileImage{{$x}}">Image {{$x+1}}</label>
+                    <div class="col-md-9">
+                        <input type="file" id="profileImage{{$x}}" name="images[{{$x}}][file]">
+                    </div>
+                </div>
+                @endfor
                 @endif
                 {{ html()->submit('Submit')->class('pull-right') }}
                 {{ html()->form()->close() }}
