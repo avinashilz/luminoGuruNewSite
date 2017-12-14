@@ -7,31 +7,27 @@
     <div class="col">
         <div class="card">
             <div class="card-header">
-                <strong>All Team Member</strong>
+                <strong>All Projects</strong>
             </div><!--card-header-->
             <div class="card-block">
                 <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>Full Name</th>
-                            <th>Email</th>
-                            <th>Designation</th>
-                            <th>Department</th>
+                            <th>Short Description</th>
                             <th>Date registered</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($teamMembers as $member)
+                        @foreach($projects as $project)
                         <tr>
-                            <td>{{ $member->name }}</td>
-                            <td>{{ $member->email }}</td>
-                            <td>{{ $member->designation }}</td>
-                            <td>{{ $member->department }}</td>
-                            <td>{{ $member->created_at }}</td>
+                            <td>{{ $project->name }}</td>
+                            <td>{{ $project->short_description }}</td>
+                            <td>{{ $project->created_at }}</td>
                             <td>
-                                <a class="badge badge-warning" href="{{ route('admin.team-members.edit', $member->id) }}">Edit</a>
-                                <a class="badge badge-danger" href="{{route('admin.team-members.destroy', $member->id)}}" data-method="delete" name="delete_item">Delete</a>
+                                <a class="badge badge-warning" href="{{ route('admin.projects.edit', $project->id) }}">Edit</a>
+                                <a class="badge badge-danger" href="{{route('admin.projects.destroy', $project->id)}}" data-method="delete" name="delete_item">Delete</a>
                             </td>
                         </tr>
                         @endforeach
