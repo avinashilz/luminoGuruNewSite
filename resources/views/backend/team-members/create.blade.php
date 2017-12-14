@@ -66,11 +66,11 @@
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="profileImage{{$x}}">Image {{$x+1}}</label>
                     <div class="col-md-4">
-                        <input type="text" id="profileImage{{$x}}" name="images[{{$x}}][id]" value="{{$image->id}}">
+                        <input type="hidden" id="profileImage{{$x}}" name="images[{{$x}}][id]" value="{{$image->id}}">
                         <input type="file" id="profileImage{{$x}}" name="images[{{$x}}][file]">
                     </div>
                     <div class="col-md-5">
-                        <img src="https://auto.ndtvimg.com/car-images/medium/hyundai/verna/hyundai-verna.jpg?v=18">
+                        <img src="{{route('frontend.getFileEntry', $image->filename)}}">
                     </div>
                 </div>
                 @endforeach
