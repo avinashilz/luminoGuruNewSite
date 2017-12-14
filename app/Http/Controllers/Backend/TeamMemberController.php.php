@@ -13,12 +13,16 @@ use Illuminate\Support\Facades\File;
 class TeamMemberController extends Controller {
 
     public function index() {
-        $teamMembers = TeamMember::all();
+        
+        $teamMembers = TeamMember::with('images')->get();
         return view('backend.team-members.index', compact('teamMembers'));
+    
     }
 
     public function create() {
+        
         return view('backend.team-members.create');
+    
     }
 
     public function store(Request $request) {
@@ -65,13 +69,17 @@ class TeamMemberController extends Controller {
 
     
     public function show($id) {
-        $teamMember = TeamMember::where('id', $id)->first();
+        
+        $teamMember = TeamMember::where('id', $id)->with('images')->first();
         return view('backend.team-members.show', compact('teamMember'));
+    
     }
 
     public function edit($id) {
-        $teamMembers = TeamMember::where('id', $id)->first();
+    
+        $teamMember = TeamMember::where('id', $id)->with('images')->first();
         return view('backend.team-members.create', compact('teamMember'));
+    
     }
 
     public function update(Request $request, $id) {
@@ -81,9 +89,10 @@ class TeamMemberController extends Controller {
             'department' => 'required',
             'email' => 'required',
         ]);
-        $update = TeamMember::find($id);
+        dump($request->toArray());
+        $update = TeamMember::with('images')->find($id);
+        dump($update->toArray());
 
-        $update = new TeamMember;
         $update->name = $request->name;
         $update->designation = $request->designation;
         $update->department = $request->department;
@@ -92,7 +101,24 @@ class TeamMemberController extends Controller {
         $update->linkinid = $request->linkinid;
         $update->twitterid = $request->twitterid;
 
-//        $update->save();
+        $update->save();
+        
+        foreach ($request->images as $updatePhoto) {
+            if ($updatePhoto['file']->isFile()) {
+                $file = $updatePhoto['file'];
+                $extension = $file->getClientOriginalExtension();
+                Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
+                $updateEntry = FileEntry::find($updatePhoto[id]); 
+                Storage::delete($updatePhoto[filename]);
+                $updateEntry->mime = $file->getClientMimeType();
+                $updateEntry->original_filename = $file->getClientOriginalName();
+                $updateEntry->filename = $file->getFilename() . '.' . $extension;
+
+                $updateEntry->save();
+             
+            }
+            
+        }
 
 
         return redirect()->route('admin.team-members.index');
