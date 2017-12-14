@@ -89,7 +89,7 @@ class TeamMemberController extends Controller {
             'department' => 'required',
             'email' => 'required',
         ]);
-        dump($request->toArray());
+//        dump($request->toArray());
         $update = TeamMember::with('images')->find($id);
 //        dump($update->toArray());
 
@@ -104,33 +104,26 @@ class TeamMemberController extends Controller {
         $update->save();
         
         foreach ($request->images as $updatePhoto) {
-//            dd($updatePhoto);
             if ($updatePhoto['file']->isFile()) {
                 $file = $updatePhoto['file'];
                 $extension = $file->getClientOriginalExtension();
                 Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
                 $updateEntry = FileEntry::find($updatePhoto['id']); 
-//                dd($updateEntry->toArray());
-                Storage::delete($updatePhoto[filename]);
                 $updateEntry->mime = $file->getClientMimeType();
                 $updateEntry->original_filename = $file->getClientOriginalName();
                 $updateEntry->filename = $file->getFilename() . '.' . $extension;
-
                 $updateEntry->save();
-             
-            }
-            
+                Storage::disk('local')->delete($updateEntry['filename']);
+            } 
         }
-
-
         return redirect()->route('admin.team-members.index');
     }
 
     public function destroy($id) {
 
         TeamMember::where('id', $id)->delete();
-
         return redirect()->route('admin.team-members.index');
+        
     }
 
 }
