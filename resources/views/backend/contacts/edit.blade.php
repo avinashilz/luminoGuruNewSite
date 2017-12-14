@@ -2,10 +2,6 @@
 
 @section ('title', __('labels.backend.access.users.management') . ' | ' . __('labels.backend.access.users.edit'))
 
-@section('breadcrumb-links')
-@include('backend.team-members.includes.breadcrumb-links')
-@endsection
-
 @section('content')
 <div class="row">
     <div class="col">
