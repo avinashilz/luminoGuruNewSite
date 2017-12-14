@@ -9,3 +9,5 @@ require __DIR__.'/auth.php';
 require __DIR__.'/log-viewer.php';
 require __DIR__.'/contacts.php';
 require __DIR__.'/projects.php';
+require __DIR__.'/partners.php';
+require __DIR__.'/testimonials.php';

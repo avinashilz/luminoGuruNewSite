@@ -42,7 +42,7 @@
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="file">Project Image</label>
                     <div class="col-md-9">
-                        {{ html()->file('file')->class('form-control')->required(true) }}
+                        {{ html()->file('file')->class('form-control') }}
                     </div>
                 </div>
                 {{ html()->submit('Submit')->class('pull-right') }}
