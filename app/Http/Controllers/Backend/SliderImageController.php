@@ -7,71 +7,55 @@ use App\Models\SlideImage;
 
 class SliderImageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index() {
-        return view('backend.slider-image.index');
+        
+        $sliderImages = SlideImage::get();
+        return view('backend.slider-image.index', compact('$sliderImages'));
+    
     }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function create() {
+        
         return view('backend.slider-image.create');
+    
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request) {
+         $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required',
+            'link_hrf' => 'required',
+            'link_text' => 'required',
+            'order' => 'required'
+        ]);
+         
+         $slideImage = new SlideImage;
+         $slideImage->title = $request->title;
+         $slideImage->description = $request->description;
+         $slideImage->link_hrf = $request->link_hrf;
+         $slideImage->link_text = $request->link_text;
+         $slideImage->order = $request->order;
+         
+         
+        
+        
         return redirect()->route('admin.slide_images.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id) {
-        return view('backend.slider-image.show');
+        $sliderImage = SlideImage::where('id', $id)->first();
+        return view('backend.slider-image.show', compact('sliderImage'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id) {
-        return view('backend.slider-image.edit');
+        $sliderImage = SlideImage::where('id', $id)->first();
+        return view('backend.slider-image.edit', compact('sliderImage'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id) {
         return redirect()->route('admin.slide_images.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id) {
         SlideImage::where('id', $id)->delete();
 

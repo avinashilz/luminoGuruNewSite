@@ -7,3 +7,4 @@ Breadcrumbs::register('admin.dashboard', function ($breadcrumbs) {
 require __DIR__.'/team-members.php';
 require __DIR__.'/auth.php';
 require __DIR__.'/log-viewer.php';
+require __DIR__.'/contacts.php';

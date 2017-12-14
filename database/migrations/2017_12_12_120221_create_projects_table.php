@@ -20,7 +20,7 @@ class CreateProjectsTable extends Migration {
             $table->integer('file_entry_id')->unsigned();
             $table->foreign('file_entry_id')->references('id')->on('file_entries');
             $table->string('short_description');
-            $table->string('long_description');
+            $table->text('long_description');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -7,74 +7,44 @@ use App\Models\Contact;
 
 class ContactController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-   public function index() {
-        return view('backend.contact.index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create() {
-        return view('backend.contact.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request) {
-        return redirect()->route('admin.contacts.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id) {
-        return view('backend.contact.show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+//   public function index() {
+//       $address = Contact::first();
+////       dd($address->toArray());
+////        return view('backend.contacts.index');
+//    }
+//
+//    public function create() {
+////        return view('backend.contact.create');
+//    }
+//
+//    public function store(Request $request) {
+////        return redirect()->route('admin.contacts.index');
+//    }
+//
+//    public function show($id) {
+////        return view('backend.contact.show');
+//    }
     public function edit($id) {
-        return view('backend.contact.edit');
+        $contact = Contact::first();
+        return view('backend.contacts.edit', compact('contact'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id) {
-        return redirect()->route('admin.contacts.index');
+        
+        $this->validate($request, [
+            'address' => 'required',
+            'phone_no' => 'required',
+            'working_hour' => 'required'
+        ]);
+        
+        $updateAddress = Contact::find($id);
+        $updateAddress->address = $request->address;
+        $updateAddress->phone_no = $request->phone_no;
+        $updateAddress->working_hour = $request->working_hour;
+        $updateAddress->save();
+        
+        return redirect()->route('admin.contacts.edit', ['id'=>$id]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id) {
-        Contact::where('id', $id)->delete();
-
-        return back();
     }
 }

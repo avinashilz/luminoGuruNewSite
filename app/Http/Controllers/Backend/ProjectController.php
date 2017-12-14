@@ -7,31 +7,24 @@ use App\Models\Project;
 
 class ProjectController extends Controller {
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index() {
-        return view('backend.project.index');
+        $projects = Project::get();
+        return view('backend.projects.index' , compact('$projects'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function create() {
-        return view('backend.project.create');
+        $projectCategories = ProjectCategory::get();
+        return view('backend.projects.create', compact('$projectCategories'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request) {
+        $this->validate($request, [
+            
+        
+        ]);
+        
         return redirect()->route('admin.projects.index');
     }
 
@@ -52,7 +45,7 @@ class ProjectController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        return view('backend.project.edit');
+        return view('backend.projects.edit');
     }
 
     /**
