@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\File;
 class ProjectController extends Controller {
 
     public function index() {
-        $projects = Project::get()->with('image');
+        $projects = Project::with('image')->get();
         return view('backend.projects.index', compact('projects'));
     }
 
