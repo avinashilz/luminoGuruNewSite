@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers\Backend;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Project;  
+use App\Models\Project;
 use App\Models\ProjectCategory;
 use App\Models\FileEntry;
 use Illuminate\Support\Facades\Storage;
@@ -12,69 +13,91 @@ use Illuminate\Support\Facades\File;
 class ProjectController extends Controller {
 
     public function index() {
-        $projects = Project::get();
-        return view('backend.projects.index' , compact('projects'));
+        $projects = Project::get()->with('image');
+        return view('backend.projects.index', compact('projects'));
     }
 
-    
     public function create() {
-        $projectCategories = ProjectCategory::pluck('id', 'category');
+        $projectCategories = ProjectCategory::pluck('category', 'id');
         return view('backend.projects.create', compact('projectCategories'));
     }
 
-    
     public function store(Request $request) {
+
         $this->validate($request, [
-            'project_category_id'=>'required',
-            'name'=>'required',
-            'short_description'=>'required',
-            'long_description'=>'required',
-            
-            
-        
+            'project_category_id' => 'required',
+            'name' => 'required',
+            'short_description' => 'required',
+            'long_description' => 'required'
         ]);
-        
+
+//        dd($request->toArray());
+        $project = new Project;
+        $project->name = $request->name;
+        $project->project_category_id = $request->project_category_id;
+        $project->short_description = $request->short_description;
+        $project->long_description = $request->long_description;
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $extension = $file->getClientOriginalExtension();
+            Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
+            $entry = new Fileentry();
+            $entry->mime = $file->getClientMimeType();
+            $entry->original_filename = $file->getClientOriginalName();
+            $entry->filename = $file->getFilename() . '.' . $extension;
+            $entry->save();
+            $entryid = $entry->id;
+//            dd($entryid);
+        }
+        $project->file_entry_id = $entryid;
+        $project->save();
+
         return redirect()->route('admin.projects.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id) {
-        return view('backend.projects.show');
+        $project = Project::where('id', $id)->with('image')->first();
+        return view('backend.projects.show', compact('project'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id) {
-        return view('backend.projects.edit');
+        $project = Project::where('id', $id)->with('image')->first();
+        return view('backend.projects.create', compact('project'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id) {
+
+        $this->validate($request, [
+            'project_category_id' => 'required',
+            'name' => 'required',
+            'short_description' => 'required',
+            'long_description' => 'required'
+        ]);
+
+        $updateProject = Project::with('image')->find($id);
+
+        $updateProject->name = $request->name;
+        $updateProject->project_category_id = $request->project_category_id;
+        $updateProject->short_description = $request->short_description;
+        $updateProject->long_description = $request->long_description;
+
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $extension = $file->getClientOriginalExtension();
+            Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
+            $updateEntry = FileEntry::find($updatePhoto['id']);
+            $updateEntry->mime = $file->getClientMimeType();
+            $updateEntry->original_filename = $file->getClientOriginalName();
+            $updateEntry->filename = $file->getFilename() . '.' . $extension;
+            $updateEntry->save();
+            Storage::disk('local')->delete($updateEntry['filename']);
+        }
         return redirect()->route('admin.projects.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id) {
+    public  function destroy($id) {
         Project::where('id', $id)->delete();
 
         return back();
