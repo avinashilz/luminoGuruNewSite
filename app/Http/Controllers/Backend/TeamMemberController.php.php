@@ -85,9 +85,8 @@ class TeamMemberController extends Controller {
             'department' => 'required',
             'email' => 'required',
         ]);
-//        dd($request->toArray());
+
         $update = TeamMember::with('images')->find($id);
-//        dump($update->toArray());
 
         $update->name = $request->name;
         $update->designation = $request->designation;

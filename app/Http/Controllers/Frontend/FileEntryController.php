@@ -15,8 +15,8 @@ use Illuminate\Http\Request;
 class FileEntryController extends Controller
 {
     public function get(Request $request, $filename) {
-//        dd($request->ajax());
-        $entry = Fileentry::where('filename', '=', $filename)->firstOrFail();
+//        dd($request->toArray());
+        $entry = FileEntry::where('filename', '=', $filename)->firstOrFail();
 		$file = Storage::disk('local')->get($entry->filename);
 		return response($file, 200)->header('Content-Type', $entry->mime);
     }
