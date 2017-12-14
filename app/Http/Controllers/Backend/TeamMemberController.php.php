@@ -13,16 +13,14 @@ use Illuminate\Support\Facades\File;
 class TeamMemberController extends Controller {
 
     public function index() {
-        
+
         $teamMembers = TeamMember::with('images')->get();
         return view('backend.team-members.index', compact('teamMembers'));
-    
     }
 
     public function create() {
-        
+
         return view('backend.team-members.create');
-    
     }
 
     public function store(Request $request) {
@@ -32,6 +30,7 @@ class TeamMemberController extends Controller {
             'department' => 'required',
             'email' => 'required',
         ]);
+
         $teamMember = new TeamMember;
         $teamMember->name = $request->name;
         $teamMember->designation = $request->designation;
@@ -67,19 +66,16 @@ class TeamMemberController extends Controller {
         return redirect()->route('admin.team-members.index');
     }
 
-    
     public function show($id) {
-        
+
         $teamMember = TeamMember::where('id', $id)->with('images')->first();
         return view('backend.team-members.show', compact('teamMember'));
-    
     }
 
     public function edit($id) {
-    
+
         $teamMember = TeamMember::where('id', $id)->with('images')->first();
         return view('backend.team-members.create', compact('teamMember'));
-    
     }
 
     public function update(Request $request, $id) {
@@ -89,7 +85,7 @@ class TeamMemberController extends Controller {
             'department' => 'required',
             'email' => 'required',
         ]);
-//        dump($request->toArray());
+//        dd($request->toArray());
         $update = TeamMember::with('images')->find($id);
 //        dump($update->toArray());
 
@@ -102,19 +98,24 @@ class TeamMemberController extends Controller {
         $update->twitterid = $request->twitterid;
 
         $update->save();
-        
+
         foreach ($request->images as $updatePhoto) {
-            if ($updatePhoto['file']->isFile()) {
-                $file = $updatePhoto['file'];
-                $extension = $file->getClientOriginalExtension();
-                Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
-                $updateEntry = FileEntry::find($updatePhoto['id']); 
-                $updateEntry->mime = $file->getClientMimeType();
-                $updateEntry->original_filename = $file->getClientOriginalName();
-                $updateEntry->filename = $file->getFilename() . '.' . $extension;
-                $updateEntry->save();
-                Storage::disk('local')->delete($updateEntry['filename']);
-            } 
+            
+            if (isset($updatePhoto['file'])) {
+            
+                if ($updatePhoto['file']->isFile()) {
+                    $file = $updatePhoto['file'];
+                    $extension = $file->getClientOriginalExtension();
+                    Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
+                    $updateEntry = FileEntry::find($updatePhoto['id']);
+                    $updateEntry->mime = $file->getClientMimeType();
+                    $updateEntry->original_filename = $file->getClientOriginalName();
+                    $updateEntry->filename = $file->getFilename() . '.' . $extension;
+                    $updateEntry->save();
+                    Storage::disk('local')->delete($updateEntry['filename']);
+                
+                }
+            }
         }
         return redirect()->route('admin.team-members.index');
     }
@@ -123,7 +124,6 @@ class TeamMemberController extends Controller {
 
         TeamMember::where('id', $id)->delete();
         return redirect()->route('admin.team-members.index');
-        
     }
 
 }
