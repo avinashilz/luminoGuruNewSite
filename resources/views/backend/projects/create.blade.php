@@ -24,7 +24,7 @@
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="short_description">Project Category</label>
                     <div class="col-md-9">
-                        {{ html()->multiselect('project_category_id', $projectCategories)->class('form-control')->required(true) }}
+                        {{ html()->select('project_category_id', $projectCategories)->class('form-control')->required(true) }}
                     </div>
                 </div>
                 <div class="form-group row">
@@ -42,7 +42,7 @@
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="file">Project Image</label>
                     <div class="col-md-9">
-                        {{ html()->file('file')->placeholder('Project Image')->class('form-control')->required(true) }}
+                        {{ html()->file('file')->class('form-control')->required(true) }}
                     </div>
                 </div>
                 {{ html()->submit('Submit')->class('pull-right') }}
