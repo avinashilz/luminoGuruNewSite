@@ -13,25 +13,23 @@ class ProjectController extends Controller {
 
     public function index() {
         $projects = Project::get();
-        return view('backend.projects.index' , compact('$projects'));
+        return view('backend.projects.index' , compact('projects'));
     }
 
     
     public function create() {
-        $projectCategories = ProjectCategory::get();
-        return view('backend.projects.create', compact('$projectCategories'));
+        $projectCategories = ProjectCategory::pluck('id', 'category');
+        return view('backend.projects.create', compact('projectCategories'));
     }
 
     
     public function store(Request $request) {
         $this->validate($request, [
             'project_category_id'=>'required',
-            'project_category_id'=>'required',
-            'project_category_id'=>'required',
-            'project_category_id'=>'required',
-            'project_category_id'=>'required',
-            'project_category_id'=>'required',
-            'project_category_id'=>'required',
+            'name'=>'required',
+            'short_description'=>'required',
+            'long_description'=>'required',
+            
             
         
         ]);
@@ -46,7 +44,7 @@ class ProjectController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        return view('backend.project.show');
+        return view('backend.projects.show');
     }
 
     /**
