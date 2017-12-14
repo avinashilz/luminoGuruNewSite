@@ -91,7 +91,7 @@ class TeamMemberController extends Controller {
         ]);
         dump($request->toArray());
         $update = TeamMember::with('images')->find($id);
-        dump($update->toArray());
+//        dump($update->toArray());
 
         $update->name = $request->name;
         $update->designation = $request->designation;
@@ -104,11 +104,12 @@ class TeamMemberController extends Controller {
         $update->save();
         
         foreach ($request->images as $updatePhoto) {
+            dd($updatePhoto);
             if ($updatePhoto['file']->isFile()) {
                 $file = $updatePhoto['file'];
                 $extension = $file->getClientOriginalExtension();
                 Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
-                $updateEntry = FileEntry::find($updatePhoto[id]); 
+                $updateEntry = FileEntry::find($updatePhoto->id); 
                 Storage::delete($updatePhoto[filename]);
                 $updateEntry->mime = $file->getClientMimeType();
                 $updateEntry->original_filename = $file->getClientOriginalName();

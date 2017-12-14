@@ -7,7 +7,7 @@
 Route::get('/', 'HomeController@index')->name('index');
 Route::get('contact', 'ContactController@index')->name('contact');
 Route::post('contact/send', 'ContactController@send')->name('contact.send');
-Route::get('fileentry/get/{filename}', 'FileEntryController@get')->name('fileEntry');
+Route::get('fileentry/get/{filename}', 'FileEntryController@get')->name('getfileEntry');
 
 /*
  * These frontend controllers require the user to be logged in
