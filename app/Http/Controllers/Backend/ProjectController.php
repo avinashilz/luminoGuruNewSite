@@ -68,6 +68,8 @@ class ProjectController extends Controller {
     }
 
     public function update(Request $request, $id) {
+       
+        dd($request->toArray());
         $this->validate($request, [
             'project_category_id' => 'required',
             'name' => 'required',

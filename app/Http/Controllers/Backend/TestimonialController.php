@@ -3,75 +3,97 @@
 namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Teatimonial; 
+use App\Models\Testimonial; 
+use App\Models\FileEntry;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class TestimonialController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+ 
     public function index() {
-        return view('backend.testimonial.index');
+        $testimonials = Testimonial::with('image')->get();
+        return view('backend.testimonials.index', compact('testimonials'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function create() {
-        return view('backend.testimonial.create');
+        return view('backend.testimonials.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request) {
+        $this->validate($request, [
+            'description' => 'required',
+            'client_name' => 'required',
+            'client_company_name' => 'required'
+        ]);
+        
+        $testimonial = new Testinomial;
+        $testimonial->description = $request->description;
+        $testimonial->client_name = $request->client_name;
+        $testimonial->client_company_name = $request->client_company_name;
+        
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $extension = $file->getClientOriginalExtension();
+            Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
+            $entry = new Fileentry();
+            $entry->mime = $file->getClientMimeType();
+            $entry->original_filename = $file->getClientOriginalName();
+            $entry->filename = $file->getFilename() . '.' . $extension;
+            $entry->save();
+            $entryid = $entry->id;
+//            dd($entryid);
+        }
+        $testimonial->file_entry_id = $entryid;
+        $testimonial->save();
         return redirect()->route('admin.testimonials.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function show($id) {
-        return view('backend.testimonial.show');
+         $testimonial = Testimonial::where('id', $id)->with('image')->first();
+        return view('backend.testimonial.show', compact('testimonial'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit($id) {
-        return view('backend.testimonial.edit');
+         $testimonial = Testimonial::where('id', $id)->with('image')->first();
+        return view('backend.testimonial.edit', compact('testimonial'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, $id) {
+        
+        $this->validate($request, [
+            'description' => 'required',
+            'client_name' => 'required',
+            'client_company_name' => 'required'
+        ]);
+
+        $updateTestimonial = Testimonial::with('image')->find($id);
+
+        $updateTestimonial->description = $request->description;
+        $updateTestimonial->client_name = $request->client_name;
+        $updateTestimonial->client_company_name = $request->client_company_name;
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $extension = $file->getClientOriginalExtension();
+            Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
+            $updateEntry = FileEntry::find($updatePhoto['id']);
+            $updateEntry->mime = $file->getClientMimeType();
+            $updateEntry->original_filename = $file->getClientOriginalName();
+            $updateEntry->filename = $file->getFilename() . '.' . $extension;
+            $updateEntry->save();
+            Storage::disk('local')->delete($updateEntry['filename']);
+        }
+        $updateTestimonial->save();
         return redirect()->route('admin.testimonials.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function destroy($id) {
         Testimonial::where('id', $id)->delete();
 
