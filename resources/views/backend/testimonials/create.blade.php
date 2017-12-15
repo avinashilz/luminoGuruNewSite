@@ -33,6 +33,12 @@
                         {{ html()->text('description')->placeholder('Description')->class('form-control')->required(true) }}
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label class="col-md-3 form-control-label" for="file">Client Logo</label>
+                    <div class="col-md-9">
+                        {{ html()->file('file')->class('form-control') }}
+                    </div>
+                </div>
                 {{ html()->submit('Submit')->class('pull-right') }}
                 {{ html()->form()->close() }}
             </div><!--card-block-->

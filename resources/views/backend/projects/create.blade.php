@@ -45,6 +45,17 @@
                         {{ html()->file('file')->class('form-control') }}
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label class="col-md-3 form-control-label" for="profileImage{{$x}}">Image {{$x+1}}</label>
+                    <div class="col-md-4">
+                        {{ html()->hidden('image[id]')->value($image->id) }}
+                        <input type="hidden" id="profileImage{{$x}}" name="images[{{$x}}][id]" value="{{$image->id}}">
+                        {{ html()->file('file')->class('form-control') }}
+                    </div>
+                    <div class="col-md-5">
+                        <img src="{{route('frontend.getFileEntry', $image->filename)}}">
+                    </div>
+                </div>
                 {{ html()->submit('Submit')->class('pull-right') }}
                 {{ html()->form()->close() }}
             </div><!--card-block-->
