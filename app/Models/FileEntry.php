@@ -13,5 +13,16 @@ class FileEntry extends Model {
     public function project() {
         return $this->hasOne('App\Models\Project');
     }
+    
+     public function partner() {
+        return $this->hasOne('App\Models\Partner');
+    }
+    
+    public function testimonial() {
+        return $this->hasOne('App\Models\Testimonial');
+    }
+    public function workFlow() {
+        return $this->hasOne('App\Models\WorkFlow');
+    }
 
 }

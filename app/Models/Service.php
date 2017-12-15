@@ -3,8 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Service extends Model
 {
-    //
+    use SoftDeletes;
+    public function serviceCategory() {
+        return $this->belongsTo('App\Models\ServiceCategory');
+    }
+    public function servicePoints() {
+        return $this->hasMany('App\Models\ServicePoint');
+    }
 }

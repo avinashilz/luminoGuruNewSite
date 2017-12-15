@@ -62,12 +62,14 @@ class ProjectController extends Controller {
     }
 
     public function edit($id) {
+        $projectCategories = ProjectCategory::pluck('category', 'id');
         $project = Project::where('id', $id)->with('image')->first();
-        return view('backend.projects.create', compact('project'));
+        return view('backend.projects.create', compact('project', 'projectCategories'));
     }
 
     public function update(Request $request, $id) {
-
+       
+        dd($request->toArray());
         $this->validate($request, [
             'project_category_id' => 'required',
             'name' => 'required',
@@ -82,9 +84,8 @@ class ProjectController extends Controller {
         $updateProject->short_description = $request->short_description;
         $updateProject->long_description = $request->long_description;
 
-
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
             $extension = $file->getClientOriginalExtension();
             Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
             $updateEntry = FileEntry::find($updatePhoto['id']);
@@ -94,6 +95,7 @@ class ProjectController extends Controller {
             $updateEntry->save();
             Storage::disk('local')->delete($updateEntry['filename']);
         }
+        $updateProject->save();
         return redirect()->route('admin.projects.index');
     }
 
@@ -102,5 +104,4 @@ class ProjectController extends Controller {
 
         return back();
     }
-
 }

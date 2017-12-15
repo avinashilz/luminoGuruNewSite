@@ -3,78 +3,90 @@
 namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Partner; 
+use App\Models\Partner;
+use App\Models\FileEntry;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
 
 class PartnerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
      public function index() {
-        return view('backend.partner.index');
+         $partners = Partner::with('image')->get();
+        return view('backend.partners.index', compact('partners'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function create() {
-        return view('backend.partner.create');
+        return view('backend.partners.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request) {
+//        dd($request->toArray());
+        $this->validate($request, [
+            'name' => 'required',
+            'alt' => 'required'
+        ]);
+        $partner = new Partner;
+        $partner->name = $request->name;
+        $partner->alt = $request->alt;
+        
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $extension = $file->getClientOriginalExtension();
+            Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
+            $entry = new Fileentry();
+            $entry->mime = $file->getClientMimeType();
+            $entry->original_filename = $file->getClientOriginalName();
+            $entry->filename = $file->getFilename() . '.' . $extension;
+            $entry->save();
+            $entryid = $entry->id;
+//            dd($entryid);
+        }
+        $partner->file_entry_id = $entryid;
+        $partner->save();
         return redirect()->route('admin.partners.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id) {
-        return view('backend.partner.show');
+        $partner = Partner::where('id', $id)->with('image')->first();
+        return view('backend.partners.show', compact('partner'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id) {
-        return view('backend.partner.edit');
+        $partner = Partner::where('id', $id)->with('image')->first();
+        return view('backend.partners.edit', compact('partner'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id) {
+        $this->validate($request, [
+            'name' => 'required',
+            'alt' => 'required'
+        ]);
+
+        $updatePartner = Partner::with('image')->find($id);
+
+        $updatePartner->name = $request->name;
+        $updatePartner->alt = $request->alt;
+
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $extension = $file->getClientOriginalExtension();
+            Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
+            $updateEntry = FileEntry::find($updatePhoto['id']);
+            $updateEntry->mime = $file->getClientMimeType();
+            $updateEntry->original_filename = $file->getClientOriginalName();
+            $updateEntry->filename = $file->getFilename() . '.' . $extension;
+            $updateEntry->save();
+            Storage::disk('local')->delete($updateEntry['filename']);
+        }
+        $updatePartner->save();
         return redirect()->route('admin.partners.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id) {
         Partner::where('id', $id)->delete();
-
         return back();
     }
 }
