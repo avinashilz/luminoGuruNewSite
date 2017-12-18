@@ -31,7 +31,6 @@ class ProjectController extends Controller {
             'long_description' => 'required'
         ]);
 
-//        dd($request->all());
         $project = new Project;
         $project->name = $request->name;
         $project->project_category_id = $request->project_category_id;
@@ -48,7 +47,6 @@ class ProjectController extends Controller {
             $entry->filename = $file->getFilename() . '.' . $extension;
             $entry->save();
             $entryid = $entry->id;
-//            dd($entryid);
             $project->file_entry_id = $entryid;
         }
         $project->save();
@@ -69,7 +67,6 @@ class ProjectController extends Controller {
 
     public function update(Request $request, $id) {
 
-//        dd($request->toArray());
         $this->validate($request, [
             'project_category_id' => 'required',
             'name' => 'required',
@@ -84,9 +81,10 @@ class ProjectController extends Controller {
         $updateProject->short_description = $request->short_description;
         $updateProject->long_description = $request->long_description;
 
-        if ($request->hasFile('file')) {
+        if ($request->hasFile('file') && $request->has('file_id')) {
             $file = $request->file('file');
             $extension = $file->getClientOriginalExtension();
+            Storage::disk('local')->delete($updateProject->image->filename);
             Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
             $entry = FileEntry::find($request->file_id);
             $entry->mime = $file->getClientMimeType();

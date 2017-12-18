@@ -22,7 +22,7 @@
                         @foreach($partners as $partner)
                         <tr>
                             <td>{{ $partner->name }}</td>
-                            <td>{{ route('frontend.getFileEntry', $partner->image->filename) }}</td>
+                            <td><img src="{{ route('frontend.getFileEntry', $partner->image->filename) }}" style="width:80px;"></td>
                             <td>
                                 <a class="badge badge-warning" href="{{ route('admin.partners.edit', $partner->id) }}">Edit</a>
                                 <a class="badge badge-danger" href="{{route('admin.partners.destroy', $partner->id)}}" data-method="delete" name="delete_item">Delete</a>

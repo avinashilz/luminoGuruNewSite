@@ -66,7 +66,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {{ active_class(Active::checkUriPattern('admin/partners/create')) }}" href="{{ route('admin.partners.create') }}">
-                            Add Service
+                            Add Partner
                         </a>
                     </li>
                 </ul>

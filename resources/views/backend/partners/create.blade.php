@@ -29,8 +29,14 @@
                 </div>
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="file">Client Logo Image</label>
-                    <div class="col-md-9">
-                        {{ html()->file('file')->class('form-control')->required(true) }}
+                    <div class="col-md-4">
+                        {{ html()->file('file')->class('form-control') }}
+                    </div>
+                    <div class="col-md-5">
+                        @if(isset($partner))
+                        {{ html()->hidden('file_id')->value($partner->image->id) }}
+                        <img src="{{route('frontend.getFileEntry', $partner->image->filename)}}">
+                        @endif
                     </div>
                 </div>
                 {{ html()->submit('Submit')->class('pull-right') }}

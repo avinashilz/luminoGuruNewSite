@@ -21,7 +21,6 @@ class PartnerController extends Controller {
     }
 
     public function store(Request $request) {
-//        dd($request->toArray());
         $this->validate($request, [
             'name' => 'required',
             'alt' => 'required'
@@ -40,9 +39,8 @@ class PartnerController extends Controller {
             $entry->filename = $file->getFilename() . '.' . $extension;
             $entry->save();
             $entryid = $entry->id;
-//            dd($entryid);
+            $partner->file_entry_id = $entryid;
         }
-        $partner->file_entry_id = $entryid;
         $partner->save();
         return redirect()->route('admin.partners.index');
     }
@@ -58,32 +56,28 @@ class PartnerController extends Controller {
     }
 
     public function update(Request $request, $id) {
-//        dd($request->toArray());
         $this->validate($request, [
             'name' => 'required',
             'alt' => 'required'
         ]);
 
-        $updatePartner = Partner::with('image')->find($id);
+        $partner = Partner::with('image')->find($id);
 
-        $updatePartner->name = $request->name;
-        $updatePartner->alt = $request->alt;
+        $partner->name = $request->name;
+        $partner->alt = $request->alt;
 
-        foreach ($request->images as $updatePhoto) {
-
-            if ($updatePhoto['file']->isFile()) {
-                $file = $request->file('file');
-                $extension = $file->getClientOriginalExtension();
-                Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
-                $updateEntry = FileEntry::find($updatePhoto['id']);
-                Storage::disk('local')->delete($updateEntry['filename']);
-                $updateEntry->mime = $file->getClientMimeType();
-                $updateEntry->original_filename = $file->getClientOriginalName();
-                $updateEntry->filename = $file->getFilename() . '.' . $extension;
-                $updateEntry->save();
-            }
+        if ($request->hasFile('file') && $request->has('file_id')) {
+            $file = $request->file('file');
+            $extension = $file->getClientOriginalExtension();
+            Storage::disk('local')->delete($partner->image->filename);
+            Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
+            $entry = FileEntry::find($request->file_id);
+            $entry->mime = $file->getClientMimeType();
+            $entry->original_filename = $file->getClientOriginalName();
+            $entry->filename = $file->getFilename() . '.' . $extension;
+            $entry->save();
         }
-        $updatePartner->save();
+        $partner->save();
         return redirect()->route('admin.partners.index');
     }
 
