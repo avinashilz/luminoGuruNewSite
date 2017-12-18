@@ -35,8 +35,14 @@
                 </div>
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="file">Client Logo</label>
-                    <div class="col-md-9">
+                    <div class="col-md-4">
                         {{ html()->file('file')->class('form-control') }}
+                    </div>
+                    <div class="col-md-5">
+                        @if(isset($testimonial))
+                        {{ html()->hidden('file_id')->value($testimonial->image->id) }}
+                        <img src="{{route('frontend.getFileEntry', $testimonial->image->filename)}}">
+                        @endif
                     </div>
                 </div>
                 {{ html()->submit('Submit')->class('pull-right') }}

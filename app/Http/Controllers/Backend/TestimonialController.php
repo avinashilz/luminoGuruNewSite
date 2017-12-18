@@ -67,27 +67,23 @@ class TestimonialController extends Controller {
             'client_company_name' => 'required'
         ]);
 
-        $updateTestimonial = Testimonial::with('image')->find($id);
+        $testimonial = Testimonial::with('image')->find($id);
+        $testimonial->description = $request->description;
+        $testimonial->client_name = $request->client_name;
+        $testimonial->client_company_name = $request->client_company_name;
 
-        $updateTestimonial->description = $request->description;
-        $updateTestimonial->client_name = $request->client_name;
-        $updateTestimonial->client_company_name = $request->client_company_name;
-
-        foreach ($request->images as $updatePhoto) {
-
-            if ($updatePhoto['file']->isFile()) {
-                $file = $request->file('file');
-                $extension = $file->getClientOriginalExtension();
-                Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
-                $updateEntry = FileEntry::find($updatePhoto['id']);
-                $updateEntry->mime = $file->getClientMimeType();
-                $updateEntry->original_filename = $file->getClientOriginalName();
-                $updateEntry->filename = $file->getFilename() . '.' . $extension;
-                $updateEntry->save();
-                Storage::disk('local')->delete($updateEntry['filename']);
-            }
+       if ($request->hasFile('file') && $request->has('file_id')) {
+            $file = $request->file('file');
+            $extension = $file->getClientOriginalExtension();
+            Storage::disk('local')->delete($testimonial->image->filename);
+            Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
+            $entry = FileEntry::find($request->file_id);
+            $entry->mime = $file->getClientMimeType();
+            $entry->original_filename = $file->getClientOriginalName();
+            $entry->filename = $file->getFilename() . '.' . $extension;
+            $entry->save();
         }
-        $updateTestimonial->save();
+        $testimonial->save();
         return redirect()->route('admin.testimonials.index');
     }
 

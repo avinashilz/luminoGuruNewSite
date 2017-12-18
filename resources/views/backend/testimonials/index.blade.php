@@ -24,7 +24,7 @@
                         <tr>
                             <td>{{ $testimonial->client_name }}</td>
                             <td>{{ $testimonial->client_company_name }}</td>
-                            <td>{{ route('frontend.getFileEntry', $testimonial->image->filename) }}</td>
+                            <td><img src="{{ route('frontend.getFileEntry', $testimonial->image->filename) }}" style="width:80px;"></td>
                             <td>
                                 <a class="badge badge-warning" href="{{ route('admin.testimonials.edit', $testimonial->id) }}">Edit</a>
                                 <a class="badge badge-danger" href="{{route('admin.testimonials.destroy', $testimonial->id)}}" data-method="delete" name="delete_item">Delete</a>
