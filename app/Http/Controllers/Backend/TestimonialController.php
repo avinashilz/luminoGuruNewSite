@@ -29,7 +29,7 @@ class TestimonialController extends Controller
             'client_company_name' => 'required'
         ]);
         
-        $testimonial = new Testinomial;
+        $testimonial = new Testimonial;
         $testimonial->description = $request->description;
         $testimonial->client_name = $request->client_name;
         $testimonial->client_company_name = $request->client_company_name;
@@ -54,13 +54,13 @@ class TestimonialController extends Controller
    
     public function show($id) {
          $testimonial = Testimonial::where('id', $id)->with('image')->first();
-        return view('backend.testimonial.show', compact('testimonial'));
+        return view('backend.testimonials.show', compact('testimonial'));
     }
 
     
     public function edit($id) {
          $testimonial = Testimonial::where('id', $id)->with('image')->first();
-        return view('backend.testimonial.edit', compact('testimonial'));
+        return view('backend.testimonials.create', compact('testimonial'));
     }
 
     

@@ -24,8 +24,8 @@
                             <td>{{ $partner->name }}</td>
                             <td>{{ route('frontend.getFileEntry', $partner->image->filename) }}</td>
                             <td>
-                                <a class="badge badge-warning" href="{{ route('admin.projects.edit', $partner->id) }}">Edit</a>
-                                <a class="badge badge-danger" href="{{route('admin.projects.destroy', $partner->id)}}" data-method="delete" name="delete_item">Delete</a>
+                                <a class="badge badge-warning" href="{{ route('admin.partners.edit', $partner->id) }}">Edit</a>
+                                <a class="badge badge-danger" href="{{route('admin.partners.destroy', $partner->id)}}" data-method="delete" name="delete_item">Delete</a>
                             </td>
                         </tr>
                         @endforeach

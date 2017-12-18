@@ -15,13 +15,15 @@
                         <tr>
                             <th>Client Name</th>
                             <th>Client Company Name</th>
+                            <th>Image</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($testimonials as $testimonial)
                         <tr>
-                            <td>{{ $testimonial->name }}</td>
+                            <td>{{ $testimonial->client_name }}</td>
+                            <td>{{ $testimonial->client_company_name }}</td>
                             <td>{{ route('frontend.getFileEntry', $testimonial->image->filename) }}</td>
                             <td>
                                 <a class="badge badge-warning" href="{{ route('admin.testimonials.edit', $testimonial->id) }}">Edit</a>

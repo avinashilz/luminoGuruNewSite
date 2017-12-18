@@ -56,7 +56,7 @@ class PartnerController extends Controller
 
     public function edit($id) {
         $partner = Partner::where('id', $id)->with('image')->first();
-        return view('backend.partners.edit', compact('partner'));
+        return view('backend.partners.create', compact('partner'));
     }
 
     public function update(Request $request, $id) {
