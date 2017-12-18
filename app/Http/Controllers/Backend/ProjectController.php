@@ -68,8 +68,8 @@ class ProjectController extends Controller {
     }
 
     public function update(Request $request, $id) {
-       
-        dd($request->toArray());
+
+//        dd($request->toArray());
         $this->validate($request, [
             'project_category_id' => 'required',
             'name' => 'required',
@@ -84,24 +84,28 @@ class ProjectController extends Controller {
         $updateProject->short_description = $request->short_description;
         $updateProject->long_description = $request->long_description;
 
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $extension = $file->getClientOriginalExtension();
-            Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
-            $updateEntry = FileEntry::find($updatePhoto['id']);
-            $updateEntry->mime = $file->getClientMimeType();
-            $updateEntry->original_filename = $file->getClientOriginalName();
-            $updateEntry->filename = $file->getFilename() . '.' . $extension;
-            $updateEntry->save();
-            Storage::disk('local')->delete($updateEntry['filename']);
+        foreach ($request->images as $updatePhoto) {
+
+            if ($updatePhoto['file']->isFile()) {
+                $file = $request->file('file');
+                $extension = $file->getClientOriginalExtension();
+                Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
+                $updateEntry = FileEntry::find($updatePhoto['id']);
+                Storage::disk('local')->delete($updateEntry['filename']);
+                $updateEntry->mime = $file->getClientMimeType();
+                $updateEntry->original_filename = $file->getClientOriginalName();
+                $updateEntry->filename = $file->getFilename() . '.' . $extension;
+                $updateEntry->save();
+            }
         }
         $updateProject->save();
         return redirect()->route('admin.projects.index');
     }
 
-    public  function destroy($id) {
+    public function destroy($id) {
         Project::where('id', $id)->delete();
 
         return back();
     }
+
 }

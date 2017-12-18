@@ -9,6 +9,7 @@ use App\Models\TeamImage;
 use App\Models\FileEntry;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use App\Rules\Uppercase;
 
 class TeamMemberController extends Controller {
 
@@ -25,7 +26,7 @@ class TeamMemberController extends Controller {
 
     public function store(Request $request) {
         $this->validate($request, [
-            'name' => 'required',
+            'name' => ['required', new Uppercase],
             'designation' => 'required',
             'department' => 'required',
             'email' => 'required',
@@ -79,6 +80,7 @@ class TeamMemberController extends Controller {
     }
 
     public function update(Request $request, $id) {
+//       dd($request->toArray());
         $this->validate($request, [
             'name' => 'required',
             'designation' => 'required',
@@ -107,11 +109,11 @@ class TeamMemberController extends Controller {
                     $extension = $file->getClientOriginalExtension();
                     Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
                     $updateEntry = FileEntry::find($updatePhoto['id']);
+                    Storage::disk('local')->delete($updateEntry['filename']);
                     $updateEntry->mime = $file->getClientMimeType();
                     $updateEntry->original_filename = $file->getClientOriginalName();
                     $updateEntry->filename = $file->getFilename() . '.' . $extension;
                     $updateEntry->save();
-                    Storage::disk('local')->delete($updateEntry['filename']);
                 
                 }
             }
