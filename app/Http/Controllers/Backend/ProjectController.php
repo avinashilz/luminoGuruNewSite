@@ -31,7 +31,7 @@ class ProjectController extends Controller {
             'long_description' => 'required'
         ]);
 
-//        dd($request->toArray());
+//        dd($request->all());
         $project = new Project;
         $project->name = $request->name;
         $project->project_category_id = $request->project_category_id;
@@ -49,8 +49,8 @@ class ProjectController extends Controller {
             $entry->save();
             $entryid = $entry->id;
 //            dd($entryid);
+            $project->file_entry_id = $entryid;
         }
-        $project->file_entry_id = $entryid;
         $project->save();
 
         return redirect()->route('admin.projects.index');
@@ -84,19 +84,15 @@ class ProjectController extends Controller {
         $updateProject->short_description = $request->short_description;
         $updateProject->long_description = $request->long_description;
 
-        foreach ($request->images as $updatePhoto) {
-
-            if ($updatePhoto['file']->isFile()) {
-                $file = $request->file('file');
-                $extension = $file->getClientOriginalExtension();
-                Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
-                $updateEntry = FileEntry::find($updatePhoto['id']);
-                Storage::disk('local')->delete($updateEntry['filename']);
-                $updateEntry->mime = $file->getClientMimeType();
-                $updateEntry->original_filename = $file->getClientOriginalName();
-                $updateEntry->filename = $file->getFilename() . '.' . $extension;
-                $updateEntry->save();
-            }
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $extension = $file->getClientOriginalExtension();
+            Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
+            $entry = FileEntry::find($request->file_id);
+            $entry->mime = $file->getClientMimeType();
+            $entry->original_filename = $file->getClientOriginalName();
+            $entry->filename = $file->getFilename() . '.' . $extension;
+            $entry->save();
         }
         $updateProject->save();
         return redirect()->route('admin.projects.index');
