@@ -14,19 +14,25 @@ class FileUploadService
 
     public function uploadFile($file)
     {
-        $extension = $file->getClientOriginalExtension();
-        Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
-        $entry = new Fileentry();
-        $entry->mime = $file->getClientMimeType();
-        $entry->original_filename = $file->getClientOriginalName();
-        $entry->filename = $file->getFilename() . '.' . $extension;
-        $entry->save();
-        return $entry->id;
+        return $this->saveFile($file, new Fileentry());
     }
 
     public function replaceFile($file, $oldFileName)
     {
         Storage::disk('local')->delete($oldFileName);
-        return $this->uploadFile($file);
+        $entry = FileEntry::where('filename', $oldFileName)->first();
+        
+        return $this->saveFile($file, $entry);
+    }
+
+    public function saveFile($file, $entry)
+    {
+        $extension = $file->getClientOriginalExtension();
+        Storage::disk('local')->put($file->getFileName() . '.' . $extension, File::get($file));
+        $entry->mime = $file->getClientMimeType();
+        $entry->original_filename = $file->getClientOriginalName();
+        $entry->filename = $file->getFilename() . '.' . $extension;
+        $entry->save();
+        return $entry->id;
     }
 }
