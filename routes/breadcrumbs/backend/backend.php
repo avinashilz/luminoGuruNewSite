@@ -11,3 +11,4 @@ require __DIR__.'/contacts.php';
 require __DIR__.'/projects.php';
 require __DIR__.'/partners.php';
 require __DIR__.'/testimonials.php';
+require __DIR__.'/work-flows.php';

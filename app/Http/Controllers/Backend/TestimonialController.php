@@ -42,7 +42,6 @@ class TestimonialController extends Controller {
             $entry->filename = $file->getFilename() . '.' . $extension;
             $entry->save();
             $entryid = $entry->id;
-//            dd($entryid);
         }
         $testimonial->file_entry_id = $entryid;
         $testimonial->save();

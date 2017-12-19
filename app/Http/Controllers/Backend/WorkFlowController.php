@@ -7,12 +7,13 @@ use App\Models\WorkFlow;
 use App\Models\FileEntry;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use App\Services\FileUploadService;
 
 class WorkFlowController extends Controller
 {
    
      public function index() {
-        return view('backend.work-flow.index');
+        return view('backend.work-flows.index')->with('workFlows', WorkFlow::all());
     }
 
     /**
@@ -21,7 +22,7 @@ class WorkFlowController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create() {
-        return view('backend.work-flow.create');
+        return view('backend.work-flows.create');
     }
 
     /**
@@ -31,7 +32,23 @@ class WorkFlowController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request) {
-        return redirect()->route('admin.workFlows.index');
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+
+        $workFlow = new WorkFlow();
+        $workFlow->title = $request->title;
+        $workFlow->description = $request->description;
+
+        if ($request->hasFile('file')) {
+            $fileUploadService = new FileUploadService();
+            $workFlow->file_entry_id = $fileUploadService->uploadFile($request->file('file'));
+        }
+        
+        $workFlow->save();
+
+        return redirect()->route('admin.work-flows.index');
     }
 
     /**
@@ -41,7 +58,7 @@ class WorkFlowController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show($id) {
-        return view('backend.work-flow.show');
+        return view('backend.work-flows.show');
     }
 
     /**
@@ -51,7 +68,8 @@ class WorkFlowController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        return view('backend.work-flow.edit');
+        $workFlow = WorkFlow::where('id', $id)->with('image')->first();
+        return view('backend.work-flows.create', compact('workFlow'));
     }
 
     /**
@@ -62,7 +80,23 @@ class WorkFlowController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
-        return redirect()->route('admin.workFlows.index');
+        $this->validate($request, [
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+
+        $workFlow = WorkFlow::with('image')->find($id);
+        $workFlow->title = $request->title;
+        $workFlow->description = $request->description;
+
+        if ($request->hasFile('file')) {
+            $fileUploadService = new FileUploadService();
+            $workFlow->file_entry_id = $fileUploadService->replaceFile($request->file('file'), $workFlow->image->filename);
+        }
+
+        $workFlow->save();
+
+        return redirect()->route('admin.work-flows.edit', $workFlow->id);
     }
 
     /**
