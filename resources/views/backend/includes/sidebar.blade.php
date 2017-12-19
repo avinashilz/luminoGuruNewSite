@@ -96,12 +96,12 @@
 
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
-                        <a class="nav-link {{ active_class(Active::checkUriPattern('admin/job-postings')) }}" href="{{ route('admin.team-members.index') }}">
+                        <a class="nav-link {{ active_class(Active::checkUriPattern('admin/job-postings')) }}" href="{{ route('admin.job-postings.index') }}">
                             All Job Postings
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ active_class(Active::checkUriPattern('admin/job-postings/create')) }}" href="{{ route('admin.team-members.create') }}">
+                        <a class="nav-link {{ active_class(Active::checkUriPattern('admin/job-postings/create')) }}" href="{{ route('admin.job-postings.create') }}">
                             Add Job Posting
                         </a>
                     </li>
