@@ -132,12 +132,12 @@
 
                 <ul class="nav-dropdown-items">
                     <li class="nav-item">
-                        <a class="nav-link {{ active_class(Active::checkUriPattern('admin/team-members')) }}" href="{{ route('admin.team-members.index') }}">
+                        <a class="nav-link {{ active_class(Active::checkUriPattern('admin/services')) }}" href="{{ route('admin.services.index') }}">
                             All Services
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ active_class(Active::checkUriPattern('admin/team-members/create')) }}" href="{{ route('admin.team-members.create') }}">
+                        <a class="nav-link {{ active_class(Active::checkUriPattern('admin/services/create')) }}" href="{{ route('admin.services.create') }}">
                             Add Service
                         </a>
                     </li>

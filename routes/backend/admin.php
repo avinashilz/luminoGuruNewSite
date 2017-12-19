@@ -13,6 +13,8 @@ Route::resource('projects', 'ProjectController');
 
 Route::resource('work-flows', 'WorkFlowController');
 
+Route::resource('services', 'ServiceController');
+
 Route::resource('job-postings', 'JobPostingController');
 
 Route::resource('partners', 'PartnerController');

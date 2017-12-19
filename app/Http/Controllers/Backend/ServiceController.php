@@ -3,7 +3,8 @@
 namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Team; 
+use App\Models\Service;
+use App\Models\ServiceCategory;
 
 class ServiceController extends Controller
 {
@@ -14,7 +15,8 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        //
+        $services = Service::with('serviceCategory')->get();
+        return view('backend.services.index', compact('services'));
     }
 
     /**
@@ -24,7 +26,9 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        //
+        $serviceCategories = ServiceCategory::get()->pluck('category', 'id');
+        return view('backend.services.create', compact('serviceCategories'));
+
     }
 
     /**
@@ -35,7 +39,18 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+            'service_category_id' => 'required',
+        ]);
+
+        $service = new Service();
+        $service->title = $request->title;
+        $service->service_category_id = $request->service_category_id;
+
+        $service->save();
+
+        return redirect()->route('admin.services.index');
     }
 
     /**
@@ -57,7 +72,9 @@ class ServiceController extends Controller
      */
     public function edit($id)
     {
-        //
+        $service = Service::find($id);
+        $serviceCategories = ServiceCategory::get()->pluck('category', 'id');
+        return view('backend.services.create', compact('service', 'serviceCategories'));
     }
 
     /**
@@ -69,7 +86,18 @@ class ServiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+            'service_category_id' => 'required',
+        ]);
+
+        $service = Service::find($id);
+        $service->title = $request->title;
+        $service->service_category_id = $request->service_category_id;
+
+        $service->save();
+
+        return redirect()->route('admin.services.edit', $service->id);
     }
 
     /**
@@ -80,6 +108,8 @@ class ServiceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Service::where('id', $id)->delete();
+
+        return back();
     }
 }

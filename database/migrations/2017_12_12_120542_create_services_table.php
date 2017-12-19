@@ -16,7 +16,7 @@ class CreateServicesTable extends Migration {
             $table->increments('id');
             $table->integer('service_category_id')->unsigned();
             $table->foreign('service_category_id')->references('id')->on('service_categories');
-            $table->string('point');
+            $table->string('title');
             $table->softDeletes();
             $table->timestamps();
         });
