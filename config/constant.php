@@ -12,7 +12,7 @@ return [
     'positions' => [
         0 => 'Senior PHP Developer',
         1 => 'Senior Frontn End Developer',
-        2 => 'Internship',
+        2 => 'Intern',
         3 => 'Chatbot Developer',
         4 => 'Content Writer',
         5 => 'Talent Acquisition Director',
@@ -21,5 +21,7 @@ return [
         8 => 'Senior Software Engineer',
         9 => 'Software Engineer',
         10 => 'Senior Testing Engineer',
+        11 => 'Human Resource Manager',
+        12 => 'Junior Engineer',
     ]
 ];
