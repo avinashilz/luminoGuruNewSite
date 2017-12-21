@@ -143,6 +143,24 @@
                     </li>
                 </ul>
             </li>
+            <li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern('admin/slider-images*'), 'open') }}">
+                <a class="nav-link nav-dropdown-toggle" href="#">
+                    <i class="icon-user"></i> Home Slider Images
+                </a>
+
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link {{ active_class(Active::checkUriPattern('admin/slider-images')) }}" href="{{ route('admin.slider-images.index') }}">
+                            All Slider Images
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ active_class(Active::checkUriPattern('admin/slider-images/create')) }}" href="{{ route('admin.slider-images.create') }}">
+                            Add Image
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <li class="nav-item nav-dropdown {{ active_class(Active::checkUriPattern('admin/auth*'), 'open') }}">
                 <a class="nav-link nav-dropdown-toggle" href="#">
                     <i class="icon-user"></i> {{ __('menus.backend.access.title') }}

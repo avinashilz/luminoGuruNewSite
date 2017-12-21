@@ -25,4 +25,4 @@ Route::resource('careers', 'CareerController');
 
 Route::resource('contacts', 'ContactController');
 
-Route::resource('slide-images', 'SliderImageController');
+Route::resource('slider-images', 'SliderImageController');

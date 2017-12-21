@@ -34,13 +34,13 @@
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="designation">Designation</label>
                     <div class="col-md-9">
-                        {{ html()->text('designation')->placeholder('Designation')->class('form-control')->required(true) }}
+                        {{ html()->select('designation')->options(config('constant.positions'))->class('form-control')->required(true) }}
                     </div>
                 </div>
                 <div class="form-group row">
                     <label class="col-md-3 form-control-label" for="department">Department</label>
                     <div class="col-md-9">
-                        {{ html()->text('department')->placeholder('Department')->class('form-control')->required(true) }}
+                        {{ html()->select('department')->options(config('constant.departments'))->class('form-control')->required(true) }}
                     </div>
                 </div>
                 <div class="form-group row">

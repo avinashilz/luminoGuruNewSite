@@ -19,8 +19,8 @@
                         <tr>
                             <th>Full Name</th>
                             <th>Email</th>
-                            <th>Designation</th>
                             <th>Department</th>
+                            <th>Designation</th>
                             <th>Date registered</th>
                             <th>Actions</th>
                         </tr>
@@ -30,8 +30,8 @@
                         <tr>
                             <td>{{ $member->name }}</td>
                             <td>{{ $member->email }}</td>
-                            <td>{{ $member->designation }}</td>
-                            <td>{{ $member->department }}</td>
+                            <td>{{ config('constant.departments')[$member->department] }}</td>
+                            <td>{{ config('constant.positions')[$member->designation] }}</td>
                             <td>{{ $member->created_at }}</td>
                             <td>
                                 <a class="badge badge-warning" href="{{ route('admin.team-members.edit', $member->id) }}">Edit</a>
