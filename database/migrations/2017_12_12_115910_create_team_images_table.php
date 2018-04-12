@@ -15,7 +15,7 @@ class CreateTeamImagesTable extends Migration {
         Schema::create('team_images', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('team_id')->unsigned();
-            $table->foreign('team_id')->references('id')->on('teams');
+            $table->foreign('team_id')->references('id')->on('team_members');
             $table->integer('file_entry_id')->unsigned();
             $table->foreign('file_entry_id')->references('id')->on('file_entries');
             $table->softDeletes();
