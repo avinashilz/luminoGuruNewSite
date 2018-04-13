@@ -1,0 +1,17 @@
+/*home*/
+
+#header header .contact-luminogru {
+  font-size: 13px;
+  font-family: poppins;
+  padding: 10px 0;
+}
+
+#header header .contact-luminogru .email-id {
+  padding-left: 0;
+}
+
+#header header .contact-luminogru .tel-no {
+  text-align: right;
+  padding-right: 0;
+}
+
